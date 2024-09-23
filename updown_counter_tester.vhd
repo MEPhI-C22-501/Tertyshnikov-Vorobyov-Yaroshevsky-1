@@ -27,19 +27,6 @@ begin
 process
 begin
 
-i_rst <= '1';
-i_start_num <= "0001";
-wait for clk_period;
-
-i_rst <= '0';
-wait;
-
-end process;
-
-
-process
-begin
-
 clk_sig <= not clk_sig;
 wait for clk_period;
 i_clk <= clk_sig;
@@ -47,11 +34,19 @@ i <= i + 1;
 
 if (i = num_of_clocks) then
 	wait;
-end if;
-
-if (i < num_of_clocks / 2) then
+elsif (i = 1) then
+	i_rst <= '1';
+	i_start_num <= "1010";
+	wait for clk_period;
+	i_rst <= '0';
+elsif (i = 30) then
+ 	i_rst <= '1';
+	i_start_num <= "0101";
+	wait for clk_period;
+	i_rst <= '0';
+elsif (i < num_of_clocks / 3) then
 	i_updown <= '1';
-else
+elsif (i < num_of_clocks / 3 * 2) then
 	i_updown <= '0';
 end if;
 
