@@ -11,22 +11,22 @@ end updown_counter;
 
 architecture Behavioral of updown_counter is
 
-signal temp_cnt : std_logic_vector (3 downto 0) := "0000";
+signal cnt_r : std_logic_vector (3 downto 0) := "0000";
 
 begin
 process(i_clk, i_rst)
 begin
 
 if (i_rst = '1') then
-	temp_cnt <= i_start_num;
+	cnt_r <= i_start_num;
 elsif (rising_edge(i_clk)) then
 	if (i_updown = '1') then
-		temp_cnt <= temp_cnt + 1;
+		cnt_r <= cnt_r + 1;
 	else
-		temp_cnt <= temp_cnt - 1;
+		cnt_r <= cnt_r - 1;
 	end if;
 end if;
 end process;
 
-o_cnt_value <= temp_cnt;
+o_cnt_value <= cnt_r;
 end Behavioral;
