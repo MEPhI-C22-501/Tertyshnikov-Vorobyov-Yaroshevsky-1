@@ -19,36 +19,54 @@ architecture updown_counter_tester_arch of updown_counter_tester is
 constant num_of_clocks : integer := 50;
 constant clk_period : time := 10 ns;
 signal clk_sig : STD_LOGIC := '0';
-signal i : integer := 0;
+-- signal i : integer := 0;
+
+
+procedure wait_clk(constant j: in integer) is 
+variable ii: integer := 0;
+begin
+
+while ii < j loop
+	if (rising_edge(clk_sig)) then
+		ii := ii + 1;
+	end if;
+	wait for 10 ps;
+end loop;
+
+end;
+
+
 
 
 begin
+
+clk_sig <= not clk_sig after clk_period / 2;
+i_clk <= clk_sig;
 
 process
 begin
 
-clk_sig <= not clk_sig;
-wait for clk_period;
-i_clk <= clk_sig;
-i <= i + 1;
+i_updown <= '1';
+wait_clk(1);
 
-if (i = num_of_clocks) then
-	wait;
-elsif (i = 1) then
-	i_rst <= '1';
-	i_start_num <= "1010";
-	wait for clk_period;
-	i_rst <= '0';
-elsif (i = 30) then
- 	i_rst <= '1';
-	i_start_num <= "0101";
-	wait for clk_period;
-	i_rst <= '0';
-elsif (i < num_of_clocks / 3) then
-	i_updown <= '1';
-elsif (i < num_of_clocks / 3 * 2) then
-	i_updown <= '0';
-end if;
+i_rst <= '1';
+i_start_num <= "1010";
+wait_clk(1);
+
+i_rst <= '0';
+wait_clk(20);
+
+i_updown <= '0';
+wait_clk(1);
+
+i_rst <= '1';
+i_start_num <= "0101";
+wait_clk(1);
+
+i_rst <= '0';
+wait_clk(20);
+
+wait;
 
 end process;
 

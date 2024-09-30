@@ -15,6 +15,7 @@ signal cnt_r : std_logic_vector (3 downto 0) := "0000";
 
 begin
 process(i_clk, i_rst)
+
 begin
 
 if (i_rst = '1') then
